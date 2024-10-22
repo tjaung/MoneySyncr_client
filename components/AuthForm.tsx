@@ -7,7 +7,7 @@ import { Button } from "./ui/button"
 import { Form } from "@/components/ui/form"
 import React from 'react'
 import { useState, ChangeEvent } from "react"
-import LogoLink from './LogoLink'
+import LogoLink from './Common/LogoLink'
 import FormInput from "./FormInput"
 import { formSchema } from "@/lib/utils"
 import { Loader2 } from 'lucide-react';

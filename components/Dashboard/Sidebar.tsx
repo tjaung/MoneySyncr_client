@@ -9,32 +9,24 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useAppSelector, useAppDispatch } from '@/redux/hooks'
 import { logout as setLogout } from '@/redux/features/authSlice'
 import { useLogoutMutation } from '@/redux/features/authApiSlice'
-import { setAuth } from '@/redux/features/authSlice'
-import { toast } from 'react-toastify'
-import { Button } from './ui/button'
+import { NavLink } from '../Common'
 
-const Sidebar = ({userData}: {userData:Object}) => {
-    const dispatch = useAppDispatch()
-    const router = useRouter()
-    const {isAuthenticated} = useAppSelector(state => state.auth)
-    const [logout] = useLogoutMutation()
+const Sidebar = () => {
+    const pathname = usePathname();
+	const dispatch = useAppDispatch();
 
-    const handleLogout = () => {
-        logout(undefined)
-            .unwrap()
-            .then(() => {
-                console.log('loggingout')
-                dispatch(setLogout())
-                console.log(dispatch)
-                toast.success('Logged out')
-            })
-            .finally(() => {
-                router.push('sign-in')
-            })
-    }
-    // console.log(user)
-    const pathname = usePathname()
-    console.log(userData)
+	const [logout] = useLogoutMutation();
+
+	const { isAuthenticated } = useAppSelector(state => state.auth);
+
+	const handleLogout = () => {
+		logout(undefined)
+			.unwrap()
+			.then(() => {
+				dispatch(setLogout());
+			});
+	};
+
     return (
     <section className='sidebar'>
         <nav className='flex flex-col gap-4'>
@@ -48,13 +40,8 @@ const Sidebar = ({userData}: {userData:Object}) => {
                     className='size-[24px] max-xl:size-14'
                     />
                 <h1 className='sidebar-logo'>Budget Tracker</h1>
-                <div>
-                    {/* {Object.entries(userData).map(([key, value]) => (
-                        <p key={key}>{key + ' ' + value}</p>
-                    ))} */}
-                </div>
             </Link>
-            <button className='text-gray-600 h-20px w-50px' onClick={handleLogout} title='Logout'>Logout</button>
+            
             {sidebarLinks.map((item: any) => {
                 const isActive = pathname === item.route || pathname.startsWith(`${item.route}/`)
 
@@ -78,7 +65,9 @@ const Sidebar = ({userData}: {userData:Object}) => {
                     </Link>
                 )
             })}
-             <button className='text-gray-600 h-20px w-50px' onClick={handleLogout} title='Logout'>Logout</button>
+             <NavLink clasName='sidebar-link h-1 bg-bank-gradient cursor-pointer' isMobile={false} onClick={handleLogout}>
+				Logout
+			</NavLink>
             USER
             
 

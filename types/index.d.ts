@@ -213,14 +213,15 @@ declare interface FooterProps {
   user: User;
 }
 
-declare interface RightSidebarProps {
-  user: User;
-  transactions: Transaction[];
-  banks: Bank[] & Account[];
-}
 
 declare interface SiderbarProps {
   user: User;
+}
+
+declare interface TotalBalanceBoxProps {
+  accounts: Account[];
+  totalBanks: number;
+  totalCurrentBalance: number;
 }
 
 declare interface RecentTransactionsProps {

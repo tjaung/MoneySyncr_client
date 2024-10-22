@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import BankCard from './BankCard'
+import BankCard from '../Dashboard/BankCard'
 
 interface RightSidebarProps {
     first_name: string;

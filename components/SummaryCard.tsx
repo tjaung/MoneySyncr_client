@@ -1,6 +1,6 @@
 import React from 'react'
-import AnimatedCounter from './AnimatedCounter'
-import DoughnutChart from './DoughnutChart'
+import AnimatedCounter from './Common/AnimatedCounter'
+import DoughnutChart from './Dashboard/DoughnutChart'
 
 const SummaryCard = ({
     accounts = [],

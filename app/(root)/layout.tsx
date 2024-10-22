@@ -1,46 +1,30 @@
-'use client'
+import { RequireAuth } from '@/components/utils';
+import Sidebar from '@/components/Dashboard/Sidebar';
+import MobileNavBar from '@/components/Common/MobileNavBar';
+import Image from 'next/image';
 
-import MobileNavBar from "@/components/MobileNavBar";
-import Sidebar from "@/components/Sidebar";
-import Image from "next/image";
-import RequireAuth from "../../components/RequireAuth";
-import { useRouter } from "next/navigation";
-import { useRetrieveUserQuery } from "@/redux/features/authApiSlice";
-import {Cookies} from 'typescript-cookie'
+interface Props {
+	children: React.ReactNode;
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const loggedIn = {
-    firstName: 'Tim',
-    lastName: 'Jaung'
-  }
-  const router = useRouter();
-  const {data: user, isError} = useRetrieveUserQuery(Cookies.get('access'));
-  console.log(user)
-
-  return (
-    <RequireAuth>
+	return <RequireAuth>
     <main className="flex h-screen w-full font-poppins-regular">
-        <Sidebar userData={user} />
+      <Sidebar />
 
-        <div className="flex size-full flex-col">
-          <div className="root-layout">
-            <Image
-              src="/icons/logo.svg"
-              width={30}
-              height={30}
-              alt="menu icon"
-            />
-            <div>
-              <MobileNavBar user={loggedIn} />
-            </div>
+      <div className="flex size-full flex-col">
+        <div className="root-layout">
+          <Image src="/icons/logo.svg" width={30} height={30} alt="logo" />
+          <div>
+            <MobileNavBar />
           </div>
-          {children}
         </div>
+        {children}
+      </div>
     </main>
-    </RequireAuth>
-  );
+  </RequireAuth>;
 }

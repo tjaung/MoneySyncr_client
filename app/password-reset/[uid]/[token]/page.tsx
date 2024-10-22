@@ -1,8 +1,8 @@
-import { PasswordResetConfirmForm } from '@/components/PasswordResetConfirmForm';
+import { PasswordResetConfirmForm } from '@/components/Forms';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-	title: 'Password Reset Confirm',
+	title: 'Full Auth | Password Reset Confirm',
 	description: 'Full Auth password reset confirm page',
 };
 

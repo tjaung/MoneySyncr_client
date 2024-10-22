@@ -19,7 +19,7 @@ import Link from 'next/link'
 import LogoLink from './LogoLink'
 
   
-const MobileNavBar = ({userData}: {userData: Object}) => {
+const MobileNavBar = () => {
     const pathname = usePathname()
 
   return (

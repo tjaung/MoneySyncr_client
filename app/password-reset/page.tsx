@@ -1,11 +1,10 @@
-
+import { PasswordResetForm } from '@/components/Forms';
 import type { Metadata } from 'next';
-import { PasswordResetForm } from '@/components/PasswordResetForm';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-	title: 'Password Reset',
-	description: 'Password reset page',
+	title: 'Full Auth | Password Reset',
+	description: 'Full Auth password reset page',
 };
 
 export default function Page() {
@@ -15,23 +14,21 @@ export default function Page() {
 				<img
 					className='mx-auto h-10 w-auto'
 					src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600'
-					alt=''
+					alt='Full Auth'
 				/>
 				<h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>
-					Get a link to reset your password
+					Reset your password
 				</h2>
-				<p>It may take a few minutes to receive your reset email</p>
 			</div>
 
 			<div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
 				<PasswordResetForm />
 			</div>
-			<footer className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm flex flex-col justify-center align-center gap-1">
-				<p className="text-14 font-normal text-gray-600">
-					<Link className="form-link" href='/sign-in'>Back to Sign-in</Link>
-				</p>
-				
-			</footer>
+			<div className='mt-10 text-center text-sm font-bold leading-9 tracking-tight text-gray-900'>
+				<Link className='font-semibold leading-6 text-indigo-600 hover:text-indigo-500' href={'sign-in'}>
+					Back to Sign-in
+				</Link>
+			</div>
 		</div>
 	);
 }
