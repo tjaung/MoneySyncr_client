@@ -227,13 +227,6 @@ export const formSchema = (type: string) => z.object({
             message: "Must be at least 5 characters long."
         }).optional(),
     // dateOfBirth: type === 'sign-in' ? z.string().optional() : z.string().min(3),
-    username: type === 'sign-in' ? z.string().optional() : z.string()
-        .min(2, {
-            message: "Username must be at least 2 characters.",
-        })
-        .max(50, {
-            message: "Username must be 50 or fewer characters."
-        }),
     password: type === 'sign-in' ? z.string().optional() : z.string()
         .min(8, {
             message: "Password must be at least 8 characters."

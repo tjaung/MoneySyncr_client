@@ -13,7 +13,7 @@ import { setAuth } from '@/redux/features/authSlice'
 import { toast } from 'react-toastify'
 import { Button } from './ui/button'
 
-const Sidebar = ({user}): SiderbarProps => {
+const Sidebar = ({userData}: {userData:Object}) => {
     const dispatch = useAppDispatch()
     const router = useRouter()
     const {isAuthenticated} = useAppSelector(state => state.auth)
@@ -34,8 +34,8 @@ const Sidebar = ({user}): SiderbarProps => {
     }
     // console.log(user)
     const pathname = usePathname()
-    console.log(user)
-  return (
+    console.log(userData)
+    return (
     <section className='sidebar'>
         <nav className='flex flex-col gap-4'>
 
@@ -48,6 +48,11 @@ const Sidebar = ({user}): SiderbarProps => {
                     className='size-[24px] max-xl:size-14'
                     />
                 <h1 className='sidebar-logo'>Budget Tracker</h1>
+                <div>
+                    {/* {Object.entries(userData).map(([key, value]) => (
+                        <p key={key}>{key + ' ' + value}</p>
+                    ))} */}
+                </div>
             </Link>
             <button className='text-gray-600 h-20px w-50px' onClick={handleLogout} title='Logout'>Logout</button>
             {sidebarLinks.map((item: any) => {
@@ -73,7 +78,7 @@ const Sidebar = ({user}): SiderbarProps => {
                     </Link>
                 )
             })}
-
+             <button className='text-gray-600 h-20px w-50px' onClick={handleLogout} title='Logout'>Logout</button>
             USER
             
 

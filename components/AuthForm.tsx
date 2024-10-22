@@ -18,7 +18,6 @@ import { useAppDispatch } from '@/redux/hooks';
 import { useLoginMutation } from '@/redux/features/authApiSlice';
 import { setAuth } from '@/redux/features/authSlice';
 import { toast } from "react-toastify"
-import { signUp, signIn } from "@/lib/actions/user.actions"
 
 const AuthForm = ({type}:{type: string}) => {
     const [register] = useRegisterMutation()
@@ -41,13 +40,11 @@ const AuthForm = ({type}:{type: string}) => {
             city: "",
             state: "",
             zipCode: "",
-            email: "",
-            username:"",
             password: "",
             phone: "",
           }
         : {
-            username: "",
+            email: "",
             password: "",
           },
     });
@@ -55,7 +52,9 @@ const AuthForm = ({type}:{type: string}) => {
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof formSchemaValidator>) {
         setIsLoading(true);
+        console.log(type)
         try {
+          // Sign-up functionality
           if (type === "sign-up") {
             console.log('is Sign-up')
             
@@ -70,12 +69,11 @@ const AuthForm = ({type}:{type: string}) => {
               email: values.email,
               phone: values.phone,
               password: values.password,
-              re_password: values.repassword,
-              username: values.username
+              re_password: values.repassword
             };
+            console.log(userData)
 
             // register user
-            // await signUp(userData)
             register(userData)
               .unwrap()
               .then(() => {
@@ -85,12 +83,15 @@ const AuthForm = ({type}:{type: string}) => {
                 router.push('sign-in')
               })
               .catch((error) => {
+                console.error(error)
                 toast.error(JSON.stringify(error.data))
               })
-          }
+          } else if(type==='sign-in'){
+
+          // else sign-in
           // Log the form values to the console for both sign-in and sign-up
           console.log("Form values:", values);
-          const signInData = {email: values.username,
+          const signInData = {email: values.email,
             password: values.password
           }
           console.log(signInData)
@@ -105,7 +106,7 @@ const AuthForm = ({type}:{type: string}) => {
             .catch(() => {
                 toast.error('Failed to log in');
             });
-
+          }
         } catch (error) {
           console.error("Error during form submission:", error);
         } finally {
@@ -134,11 +135,14 @@ const AuthForm = ({type}:{type: string}) => {
                 </h1>
             </div>
         </header>
-        {user ? (
+        {/* {user ? ( */}
             <div className='flex flex-col gap-4'>
-                {/* plaid link */}
+                {/* <PlaidLink
+                  user={user}
+                  variant='primary'
+                  /> */}
             </div>
-        ) : (
+        {/* ) : ( */}
         <>
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -188,12 +192,6 @@ const AuthForm = ({type}:{type: string}) => {
                     </div>
                 </div>
                 <div className="flex gap-4">
-                    <FormInput
-                    control={form.control}
-                    name="email"
-                    label={"*Email"}
-                    placeholder="email@email.com"
-                    />
                 <FormInput
                     control={form.control}
                     name="phone"
@@ -204,23 +202,23 @@ const AuthForm = ({type}:{type: string}) => {
                 </>
             )}
                 <div className="flex flex-col gap-3">
-                    <FormInput
-                        control={form.control}
-                        name="username"
-                        label={"*Username"}
-                        placeholder="UserName"
-                        />
+                <FormInput
+                    control={form.control}
+                    name="email"
+                    label={"*Email"}
+                    placeholder="jaungt@gmail.com"
+                    />
                     <FormInput
                         control={form.control}
                         name="password"
                         label={"*Password"}
-                        placeholder="Password!1"
+                        placeholder="Password!111"
                         />
                       <FormInput
                         control={form.control}
                         name="repassword"
                         label={"*Confirm Password"}
-                        placeholder=""
+                        placeholder="Password@111"
                         />
                 </div>
                 <Button type="submit" disabled={isLoading} className="form-btn">
@@ -254,7 +252,7 @@ const AuthForm = ({type}:{type: string}) => {
           </footer>
         </>
                 
-        )}
+        
     </section>
 
   )

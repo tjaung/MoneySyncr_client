@@ -10,14 +10,15 @@ interface Props {
 
 export default function RequireAuth({ children }: Props) {
 	const { isLoading, isAuthenticated } = useAppSelector(state => state.auth);
-
-	if (isLoading) {
-		return (
-			<div className='flex justify-center my-8'>
-				<Loader2 size={20} className="animate-spin" />
-			</div>
-		);
-	}
+	console.log('Require Auth lisLoading: ', isLoading)
+	console.log('Require Auth isAuthenticated: ', isAuthenticated)
+	// if (isLoading) {
+	// 	return (
+	// 		<div className='flex justify-center my-8'>
+	// 			<Loader2 size={20} className="animate-spin" />
+	// 		</div>
+	// 	);
+	// }
 
 	if (!isAuthenticated) {
 		redirect('sign-in');
