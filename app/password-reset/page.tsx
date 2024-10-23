@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-	title: 'Full Auth | Password Reset',
-	description: 'Full Auth password reset page',
+	title: 'Money Syncr | Password Reset',
+	description: 'password reset page',
 };
 
 export default function Page() {
@@ -14,7 +14,7 @@ export default function Page() {
 				<img
 					className='mx-auto h-10 w-auto'
 					src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600'
-					alt='Full Auth'
+					alt='MoneySyncr'
 				/>
 				<h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>
 					Reset your password

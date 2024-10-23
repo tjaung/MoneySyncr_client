@@ -31,11 +31,12 @@ export default function useLogin() {
 			.then(() => {
 				dispatch(setAuth());
 				toast.success('Logged in');
-				router.push('/');
+				router.push('/dashboard');
 			})
 			.catch(() => {
 				toast.error('Failed to log in');
 			});
+		
 	};
 
 	return {

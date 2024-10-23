@@ -5,14 +5,19 @@ import { List, Spinner } from '@/components/Common';
 import HeaderBox from '@/components/HeaderBox'
 import RecentTransactions from '@/components/RecentTransactions';
 import RightSidebar from '@/components/Common/RightSidebar';
+
 import TotalBalanceBox from '@/components/TotalBalanceBox';
-import { getAccount, getAccounts } from '@/lib/actions/bank.actions';
-import { getLoggedInUser } from '@/lib/actions/user.actions';
 import SummaryCard from '@/components/SummaryCard';
-import ConnectPlaidButton from '@/components/PlaidConnectButton';
+import PlaidLink from '@/components/PlaidLink';
+import { pushUserToAppwriteAndMakeSession } from '@/lib/actions/user.actions';
+
 export default function Page() {
 
 	const { data: user, isLoading, isFetching } = useRetrieveUserQuery();
+	console.log(user, isLoading, isFetching)
+	
+	// push user to appwrite if possible
+	const madeUser = pushUserToAppwriteAndMakeSession(user)
 
 	const config = [
 		{
@@ -54,7 +59,9 @@ export default function Page() {
             totalBanks={100}
             totalCurrentBalance={1250.50}
           />
-          <ConnectPlaidButton />
+
+		<PlaidLink user={user} variant={'primary'} />
+
         </header>
 
         {/* <RecentTransactions 

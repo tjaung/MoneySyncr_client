@@ -8,6 +8,8 @@ import type {
 import { setAuth, logout } from '../features/authSlice'
 import { Mutex } from 'async-mutex'
 
+// Keeps user logged in on age refreshes
+
 console.log('NEXT_PUBLIC_HOST', process.env.NEXT_PUBLIC_HOST)
 // create a new mutex
 const mutex = new Mutex()

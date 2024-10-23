@@ -10,12 +10,18 @@ export default function useRegister() {
 	const [formData, setFormData] = useState({
 		first_name: '',
 		last_name: '',
+		address1: '',
+		city: '',
+		state: '',
+		postalCode: '',
+		dateOfBirth: '',
+		ssn: '',
 		email: '',
 		password: '',
 		re_password: '',
 	});
 
-	const { first_name, last_name, email, password, re_password } = formData;
+	const { first_name, last_name, address1, city, state, postalCode, dateOfBirth, ssn, email, password, re_password } = formData;
 
 	const onChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
@@ -26,7 +32,7 @@ export default function useRegister() {
 	const onSubmit = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		register({ first_name, last_name, email, password, re_password })
+		register({ first_name, last_name, address1, city, state, postalCode, dateOfBirth, ssn, email, password, re_password })
 			.unwrap()
 			.then(() => {
 				toast.success('Please check email to verify account');
@@ -40,6 +46,12 @@ export default function useRegister() {
 	return {
 		first_name,
 		last_name,
+		address1, 
+		city, 
+		state, 
+		postalCode, 
+		dateOfBirth, 
+		ssn,
 		email,
 		password,
 		re_password,

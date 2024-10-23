@@ -112,6 +112,19 @@ declare type Receiver = {
   lastName: string;
 };
 
+declare type UserObjectParams = {
+  first_name: string
+  last_name: string
+  address1: string
+  city:string
+  state:string
+  postalCode:string
+  dateOfBirth:string
+  ssn:string
+  email: string
+  users_id: string
+}
+
 declare type TransferParams = {
   sourceFundingSourceUrl: string;
   destinationFundingSourceUrl: string;
