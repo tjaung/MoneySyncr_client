@@ -13,14 +13,31 @@ import {
 import { cn } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
 import { sidebarLinks } from '@/constants'
-
+import { useAppSelector, useAppDispatch } from '@/redux/hooks'
+import { logout as setLogout } from '@/redux/features/authSlice'
+import { useLogoutMutation } from '@/redux/features/authApiSlice'
+import NavLink from './NavLink'
 import Image from 'next/image'
 import Link from 'next/link'
 import LogoLink from './LogoLink'
+import { Button } from '../ui/button'
 
   
 const MobileNavBar = () => {
     const pathname = usePathname()
+	const dispatch = useAppDispatch();
+
+	const [logout] = useLogoutMutation();
+
+	const { isAuthenticated } = useAppSelector(state => state.auth);
+
+	const handleLogout = () => {
+		logout(undefined)
+			.unwrap()
+			.then(() => {
+				dispatch(setLogout());
+			});
+	};
 
   return (
     <section className='w-fulll max-w-[260px]'>
@@ -47,7 +64,7 @@ const MobileNavBar = () => {
                                     <SheetClose asChild key={item.route}>
                                         {/* <nav className='flex h-full gap-6 flex-col pt-16 text-white'> */}
                                             <Link 
-                                                href={item.route}
+                                                href={`/dashboard/${item.route}`}
                                                 key={item.label}
                                                 className={cn('mobilenav-sheet_close w-full', {'bg-bank-gradient': isActive})}
                                             >
@@ -66,11 +83,13 @@ const MobileNavBar = () => {
                                     </SheetClose>
                                     )
                                 })}
-                                USER
+                                <Button className='sidebar-link h-1 bg-bank-gradient h-50 w-25 cursor-pointer' isMobile={true} onClick={handleLogout}>
+                                    Logout
+                                </Button>
                             </nav>       
 
                         </SheetClose>
-                        FOOTER
+                        
                     </div>
                 </nav>
             </SheetContent>

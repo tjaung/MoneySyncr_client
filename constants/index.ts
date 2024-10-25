@@ -6,17 +6,17 @@ export const sidebarLinks = [
   },
   {
     imgURL: "/icons/dollar-circle.svg",
-    route: "/accounts",
+    route: "accounts",
     label: "Accounts",
   },
   {
     imgURL: "/icons/transaction.svg",
-    route: "/transaction-history",
+    route: "transaction-history",
     label: "Transaction History",
   },
   {
     imgURL: "/icons/money-send.svg",
-    route: "/payment-transfer",
+    route: "payment-transfer",
     label: "Transfer Funds",
   },
 ];

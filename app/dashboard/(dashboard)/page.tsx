@@ -9,6 +9,7 @@ import SummaryCard from '@/components/Dashboard/SummaryCard';
 import { pushUserToAppwriteAndMakeSession } from '@/lib/actions/user.actions';
 import { useEffect, useState } from 'react';
 import { getAccount, getAccounts } from '@/lib/actions/bank.actions';
+import Link from 'next/link';
 
 const Page = ({searchParams: {id, page}}: SearchParamProps) => {
 	const [loggedUser, setLoggedUser] = useState(null)
@@ -105,14 +106,32 @@ const Page = ({searchParams: {id, page}}: SearchParamProps) => {
     <section className="home">
       <div className="home-content flex-col">
         <header className="home-header">
+		{loggedUser ? (
           <HeaderBox 
             type="greeting"
             title="Welcome"
-            user={config[0].value || 'Guest'}
+            user={config[0].value}
             subtext="Access and manage your account and transactions efficiently."
           />
+		) : (
+			<>
+			<HeaderBox 
+            type="greeting"
+            title="Money Syncr"
+            user={''}
+            subtext=""
+          />
+		  <p className='mt-10 text-center text-sm text-gray-500'>
+			If you are signed in and the page isn't loading try reloading the page or 
+			<Link 
+			className='font-semibold leading-6 text-indigo-600 hover:text-indigo-500'
+			href={'sign-in'}> re-signing in here
+			</Link>
+			</p>
+		  </>
+		)}
 
-		{loggedUser && (
+		{accountsInfo.accounts !== null ? (
 		<>
 			<SummaryCard
 				accounts={accountsInfo?.accountsData}
@@ -124,23 +143,25 @@ const Page = ({searchParams: {id, page}}: SearchParamProps) => {
 			  user={loggedUser}
 			  transactions={accountsInfo.accounts?.transactions || 0}
 			  banks={accountsInfo.accountsData?.slice(0,2) || 0}
-		  />
-		  </div> 
-		  <div className='md:block hidden'>
-			<RecentTransactions 
-          accounts={accountsInfo.accountsData}
-          transactions={accountsInfo.account?.transactions}
-          appwriteItemId={accountsInfo.appwriteItemId}
-          page={currentPage}
-        />
-		</div>
+			/>
+			</div> 
+			<div className='md:block hidden'>
+				<RecentTransactions 
+			accounts={accountsInfo.accountsData}
+			transactions={accountsInfo.account?.transactions}
+			appwriteItemId={accountsInfo.appwriteItemId}
+			page={currentPage}
+			/>
+			</div>
 		</>
+		) : (
+			<Spinner />
 		)}
         </header>
 
       </div>
 	  <div className='xl:block hidden'>
-	  {loggedUser && (
+	  {accountsInfo.accounts !== null ? (
 		<>
 		 <RightSidebar 
 			  user={loggedUser}
@@ -154,10 +175,12 @@ const Page = ({searchParams: {id, page}}: SearchParamProps) => {
           page={currentPage}
         /> */}
 		</>
+		): (
+			<Spinner/>
 		)}
 		</div>
 
-			{loggedUser && (
+			{accountsInfo.accounts !== null ? (
 				<div className='md:hidden'>
 				<RecentTransactions 
 				accounts={accountsInfo.accountsData}
@@ -165,20 +188,13 @@ const Page = ({searchParams: {id, page}}: SearchParamProps) => {
 				appwriteItemId={accountsInfo.appwriteItemId}
 				page={currentPage}
 			  /> 
-			  </div>)
+			  </div>
+			  ): (
+				<Spinner/>
+			  )
 			}
     
     </section>
-			{/* <header className='bg-white shadow'>
-				<div className='mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8'>
-					<h1 className='text-3xl font-bold tracking-tight text-gray-900'>
-						Dashboard
-					</h1>
-				</div>
-			</header>
-			<main className='mx-auto max-w-7xl py-6 my-8 sm:px-6 lg:px-8'>
-				<List config={config} />
-			</main> */}
 		</>
 	);
 }

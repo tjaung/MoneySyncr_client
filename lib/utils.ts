@@ -147,10 +147,12 @@ export function countTransactionCategories(
 ): CategoryCount[] {
   const categoryCounts: { [category: string]: number } = {};
   let totalCount = 0;
-
+  console.log('transactions', transactions)
+  console.log('transactions', transactions[0])
+  
   // Iterate over each transaction
   transactions &&
-    transactions.forEach((transaction) => {
+    transactions.transactions.forEach((transaction) => {
       // Extract the category from the transaction
       const category = transaction.category;
 

@@ -61,4 +61,4 @@ export const Pagination = ({ page, totalPages }: PaginationProps) => {
       </Button>
     </div>
   );
-};
+}; 

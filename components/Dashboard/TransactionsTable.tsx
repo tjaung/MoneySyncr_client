@@ -44,6 +44,7 @@ import {
             const status = getTransactionStatus(new Date(t.date))
             const amount = formatAmount(t.amount)
   
+            // not referring to cards, but adding or subtracting from acc
             const isDebit = t.type === 'debit';
             const isCredit = t.type === 'credit';
   
