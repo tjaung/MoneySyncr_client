@@ -1,6 +1,6 @@
 import React from 'react'
-import AnimatedCounter from './Common/AnimatedCounter'
-import DoughnutChart from './Dashboard/DoughnutChart'
+import AnimatedCounter from '../Common/AnimatedCounter'
+import DoughnutChart from './DoughnutChart'
 
 const SummaryCard = ({
     accounts = [],
@@ -8,6 +8,11 @@ const SummaryCard = ({
     totalCurrentBalance
 }: SummaryCardProps) => {
 
+    if (accounts.length == 0) {
+        accounts = []
+        totalBanks = 0
+        totalCurrentBalance = 0
+    }
     // balance to formatted currency
     // let formatBalance = totalCurrentBalance.toFixed(2)
   return (
@@ -15,8 +20,8 @@ const SummaryCard = ({
         <div className='total-balance-chart'>
             <DoughnutChart 
                 accounts={accounts}
-                label='Banks'
-                labels={'Bank 1,Bank 2,Bank 3'}
+                label={'Accounts'}
+                // labels={}
                 // cutoutPerc='60%'
                 displayLegend={false} />
         </div>

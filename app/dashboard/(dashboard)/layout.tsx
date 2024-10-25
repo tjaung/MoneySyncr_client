@@ -12,7 +12,8 @@ export default async function DashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-	return <RequireAuth>
+	return (
+  <RequireAuth>
     <main className="flex h-screen w-full font-poppins-regular">
       <Sidebar />
 
@@ -26,5 +27,5 @@ export default async function DashboardLayout({
         {children}
       </div>
     </main>
-  </RequireAuth>;
-}
+  </RequireAuth>
+)}

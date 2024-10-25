@@ -10,6 +10,7 @@ import { useAppSelector, useAppDispatch } from '@/redux/hooks'
 import { logout as setLogout } from '@/redux/features/authSlice'
 import { useLogoutMutation } from '@/redux/features/authApiSlice'
 import { NavLink } from '../Common'
+import PlaidLink from './Plaid/PlaidLink'
 
 const Sidebar = () => {
     const pathname = usePathname();
@@ -47,7 +48,7 @@ const Sidebar = () => {
 
                 return (
                     <Link 
-                        href={item.route}
+                        href={`/dashboard/${item.route}`}
                         key={item.label}
                         className={cn('sidebar-link h-16', {'bg-bank-gradient': isActive})}
                         >
@@ -68,7 +69,7 @@ const Sidebar = () => {
              <NavLink clasName='sidebar-link h-1 bg-bank-gradient cursor-pointer' isMobile={false} onClick={handleLogout}>
 				Logout
 			</NavLink>
-            USER
+            
             
 
         </nav>

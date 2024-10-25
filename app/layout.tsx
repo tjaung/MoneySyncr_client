@@ -30,8 +30,8 @@ export default function RootLayout({
 		<html lang='en'>
 			<body className={`${poppinsRegular.variable} ${poppinsLight.variable} antialiased`}>
 				<Provider>
-					<Setup />
-					{/* <Navbar /> */}
+					<Setup /> 
+					 {/* <Navbar /> */}
 						{children}
 					<Footer />
 				</Provider>

@@ -106,7 +106,7 @@
 
   /* Home */
   .home {
-    @apply no-scrollbar flex w-full flex-row max-xl:max-h-screen max-xl:overflow-y-scroll;
+    @apply no-scrollbar flex w-full flex-col lg:flex-row max-xl:max-h-screen max-xl:overflow-y-scroll;
   }
 
   .home-content {
@@ -155,8 +155,8 @@
 
   /* Right sidebar */
   .right-sidebar {
-    @apply no-scrollbar hidden h-screen max-h-screen flex-col border-l border-gray-200 xl:flex w-[355px] xl:overflow-y-scroll !important;
-  }
+    @apply no-scrollbar h-auto lg:max-h-screen flex-col border-l border-gray-200 xl:h-screen xl:w-[355px] xl:flex xl:overflow-y-scroll  sm:block;
+   }
 
   .profile-banner {
     @apply h-[120px] w-full bg-gradient-mesh bg-cover bg-no-repeat;

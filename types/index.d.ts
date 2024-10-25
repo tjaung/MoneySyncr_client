@@ -27,19 +27,24 @@ declare type LoginUser = {
 
 declare type User = {
   [key: string]: unknown
-  // $id: string;
-  // email: string;
-  // userId: string;
-  // dwollaCustomerUrl: string;
-  // dwollaCustomerId: string;
-  // firstName: string;
-  // lastName: string;
-  // address1: string;
-  // city: string;
-  // state: string;
-  // postalCode: string;
-  // dateOfBirth: string;
-  // ssn: string;
+  $id: string;
+  $collectionId: string
+  $createdAt: string
+  $databaseId: string
+  $updatedAt: string
+  $permissions: array
+  email: string;
+  userId: string;
+  dwollaCustomerUrl: string;
+  dwollaCustomerId: string;
+  firstName: string;
+  lastName: string;
+  address1: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  dateOfBirth: string;
+  ssn: string;
 };
 
 declare type NewUserParams = {
@@ -60,7 +65,7 @@ declare type Account = {
   type: string;
   subtype: string;
   appwriteItemId: string;
-  sharableId: string;
+  shareableId: string;
 };
 
 declare type Transaction = {
@@ -89,7 +94,7 @@ declare type Bank = {
   accessToken: string;
   fundingSourceUrl: string;
   userId: string;
-  sharableId: string;
+  shareableId: string;
 };
 
 declare type AccountTypes =
@@ -189,17 +194,17 @@ declare interface PaginationProps {
 declare interface PlaidLinkProps {
   user: User;
   variant?: "primary" | "ghost";
-  dwollaCustomerId?: string;
+  // dwollaCustomerId?: string;
 }
 
-// declare type User = sdk.Models.Document & {
-//   accountId: string;
-//   email: string;
-//   name: string;
-//   items: string[];
-//   accessToken: string;
-//   image: string;
-// };
+declare type User = sdk.Models.Document & {
+  accountId: string;
+  email: string;
+  name: string;
+  items: string[];
+  accessToken: string;
+  image: string;
+};
 
 declare interface AuthFormProps {
   type: "sign-in" | "sign-up";
@@ -331,7 +336,7 @@ declare interface createBankAccountProps {
   accountId: string;
   bankId: string;
   fundingSourceUrl: string;
-  sharableId: string;
+  shareableId: string;
 }
 
 declare interface getBanksProps {

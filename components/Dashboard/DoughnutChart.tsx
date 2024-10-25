@@ -9,18 +9,28 @@ ChartJS.register(ArcElement, Tooltip, Legend)
 
 const DoughnutChart = ({accounts, label, labels, displayLegend}: DoughnutChartProps) => {
 
-    // split labels
-    const labelsArray = labels.split(',')
+    let accountNames
+    let balances
 
+    // if user has no accounts
+    if (accounts.length == 0){
+        accountNames = []
+        balances = []
+    } else{
+        // labelsArray= accounts.map((a) => )
+        accountNames = accounts.map((a) => a.name);
+        balances = accounts.map((a) => a.currentBalance)
+    }
+   
     const data = {
         datasets: [
             {
-                label: label,
-                data: [1250, 2500, 3750],
+                // label: 'My Accounts',
+                data: balances,
                 backgroundColor: ['#0747b6', '#2265d8', '#2f91fa']
             }
         ],
-        labels: labelsArray
+        labels: accountNames
     }
 
   return (
