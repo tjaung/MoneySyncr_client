@@ -3,7 +3,6 @@ import { countTransactionCategories } from '@/lib/utils'
 import Category from './Category'
 
 const TopCategories = (transactions:Transaction) => {
-    console.log('transaction component', transactions)
     const categories: CategoryCount[] = countTransactionCategories(transactions);
 
   return (

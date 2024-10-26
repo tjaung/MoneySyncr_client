@@ -7,6 +7,7 @@ import BankInfo from './BankInfo'
 import TransactionsTable from './TransactionsTable'
 import { Pagination } from './Pagination'
 import TopCategories from './TopCategories'
+import { parseStringify } from '@/lib/utils'
 
 const RecentTransactions = ({
     accounts, 
@@ -16,14 +17,18 @@ const RecentTransactions = ({
 
   const rowsPerPage = 10
   const totalPages = Math.ceil(transactions.length/rowsPerPage)
+      console.log('recent transactions accounts', accounts)
 
+      console.log('recent transactions transactions', transactions)
+    
   const indexOfLastTransaction = page * rowsPerPage;
   const indexOfFirstTransaction = indexOfLastTransaction - rowsPerPage;
 
   const currentTransactions = transactions.slice(
     indexOfFirstTransaction, indexOfLastTransaction
   )
-
+  const allTransactions = parseStringify(accounts[0].transactions)
+  console.log(allTransactions)
   return (
     <>
      <section className="recent-transactions">
@@ -38,36 +43,42 @@ const RecentTransactions = ({
       </header>
       <div>
         <TopCategories
-          transactions={transactions}
+          transactions={allTransactions}
         />
       </div>
 
       <Tabs defaultValue={appwriteItemId} className="w-full">
       <TabsList className="recent-transactions-tablist">
-          {accounts.map((account: Account) => (
-            <TabsTrigger key={account.id} value={account.appwriteItemId}>
+          {accounts.map((account: any) => {
+            console.log(account)
+            console.log(account.data.id)
+            return (
+            <TabsTrigger key={account.data.id} value={account.data.appwriteItemId}>
               <BankTabItem
-                key={account.id}
-                account={account}
-                appwriteItemId={appwriteItemId}
+                key={account.data.id}
+                account={account.data}
+                appwriteItemId={account.data.appwriteItemId}
               />
             </TabsTrigger>
-          ))}
+          )})}
         </TabsList>
  
-        {accounts.map((account: Account) => (
+        {accounts.map((account: any) => {
+          console.log(parseStringify(account))
+          console.log(account.transactions)
+            return (
           <TabsContent
-            value={account.appwriteItemId}
-            key={account.id}
+            value={account.data.appwriteItemId}
+            key={account.data.id}
             className="space-y-4"
           >
             <BankInfo 
-              account={account}
-              appwriteItemId={appwriteItemId}
+              account={account.data.name}
+              appwriteItemId={account.data.appwriteItemId}
               type="full"
             />
-
-            <TransactionsTable transactions={transactions} />
+            {/* { console.log(this.props.account.transactions) } */}
+            <TransactionsTable transactions={account.transactions} />
             
 
             {totalPages > 1 && (
@@ -76,7 +87,7 @@ const RecentTransactions = ({
               </div> 
             )}
           </TabsContent>
-        ))}
+        )})}
       </Tabs>
     </section>
     </>

@@ -49,9 +49,9 @@ export const getAccounts = async ({ userId }: getAccountsProps) => {
           appwriteItemId: bank.$id,
           shareableId: bank.shareableId,
         };
-        console.log('bankactions getAccounts account:', account)
+        // console.log('bankactions getAccounts account:', account)
         const allTransactions = await getAccountTransactions(bank)
-        console.log(allTransactions)
+        // console.log(allTransactions)
         return parseStringify({
           data: account,
           transactions: allTransactions,
@@ -61,11 +61,11 @@ export const getAccounts = async ({ userId }: getAccountsProps) => {
 
     const totalBanks = accounts.length;
     const totalCurrentBalance = accounts.reduce((total, account) => {
-      return total + account.currentBalance;
+      return total + account.data.currentBalance;
     }, 0);
-    console.log('bankactions getAccounts end:', 
-        parseStringify({ data: accounts, totalBanks, totalCurrentBalance })
-    )
+    // console.log('bankactions getAccounts end:', 
+    //     parseStringify({ data: accounts, totalBanks, totalCurrentBalance })
+    // )
     return parseStringify({ data: accounts, totalBanks, totalCurrentBalance });
   } catch (error) {
     console.error("An error occurred while getting the accounts:", error);
@@ -79,7 +79,7 @@ export const getAccountTransactions = async (bank : Bank) => {
      const transferTransactionsData = await getTransactionsByBankId({
       bankId: bank.$id,
     });
-    console.log('getAccount transfertransactionsdata', transferTransactionsData)
+    // console.log('getAccount transfertransactionsdata', transferTransactionsData)
 
     const transferTransactions = transferTransactionsData.documents.map(
       (transferData: Transaction) => ({
@@ -89,16 +89,20 @@ export const getAccountTransactions = async (bank : Bank) => {
         date: transferData.$createdAt,
         paymentChannel: transferData.channel,
         category: transferData.category,
+        senderId: transferData.senderBankId,
+        receiverId: transferData.receiverBankId,
         type: transferData.senderBankId === bank.$id ? "debit" : "credit",
+        // bank: transferData.accountId
       })
     );
-    console.log('getAccounts transfertransactions', transferTransactions)
+    // transferTransactions.forEach()
+    // console.log('getAccounts transfertransactions', transferTransactions)
 
     const transactions = await getTransactions({
       accessToken: bank?.accessToken,
+      bankId: bank?.$id
     });
     console.log('getaccount trans', transactions)
-
     // sort transactions by date such that the most recent transaction is first
     const allTransactions = [...transactions, ...transferTransactions].sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -174,6 +178,7 @@ export const getInstitution = async ({
 // Get transactions
 export const getTransactions = async ({
   accessToken,
+  bankId
 }: getTransactionsProps) => {
   let hasMore = true;
   let transactions: any = [];
@@ -198,6 +203,7 @@ export const getTransactions = async ({
         category: transaction.category ? transaction.category[0] : "",
         date: transaction.date,
         image: transaction.logo_url,
+        bank: bankId
       }));
 
       hasMore = data.has_more;

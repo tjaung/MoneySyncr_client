@@ -9,9 +9,17 @@ import TransactionsTable from '@/components/Dashboard/TransactionsTable'
 import { Spinner } from '@/components/Common'
 import TopCategories from '@/components/Dashboard/TopCategories'
 
+
+interface AccountsInfo {
+	accounts: { data: Account; transactions: Transaction[] }[] | null;
+	accountsData: Account[]; // Adjust these types to match your actual data structure
+	appwriteItemId: string;
+	account: Account | null;
+  }
+  
 const TransactionHistory = ({searchParams: {id, page}}) => {
   const [loggedUser, setLoggedUser] = useState(null)
-	const [accountsInfo, setAccountsInfo] = useState({
+	const [accountsInfo, setAccountsInfo] = useState<AccountsInfo>({
 		accounts:null, 
 		accountsData:[], 
 		appwriteItemId:'', 
@@ -75,53 +83,50 @@ const TransactionHistory = ({searchParams: {id, page}}) => {
 	}, [loggedUser])
 	console.log('accountsinfo',accountsInfo)
 
-  return (
-    <section className='transactions'>
-      <div className='transactions-header'>
-        <HeaderBox
-          title='Transaction History'
-          subtext='See your bank details and transactions'
-        />
-
-      </div>
-    {accountsInfo.accounts !== null ? (
-      <div className='space-y-6'>
-        <div className='transactions-account'>
-          <div className='flex flex--col gap-2'>
-            <h2 className='text-18 font-bold text-white'>{accountsInfo.account?.data.name}</h2>
-            <p className='text-14 text-blue-25'>
-              {accountsInfo.account?.data.officialName}
-            </p>
-            <p className='text-14 font-semibold tracking-[1.1px] text-white'>
-              <span className='text-20'>
-                **** **** **** </span>
-              <span className='text-16'>{accountsInfo.account?.data.mask}</span>
-            </p>
-          </div>
-          <div className='transactions-accounts-balance'>
-            <p className='text-14'>
-              Account Balance
-            </p>
-            <p className='text-24 font-bold'>
-              {accountsInfo.account?.data.currentBalance}
-            </p>
-          </div>
-        </div>
-
-        <section className='flex w-full flex-col gap-6'>
-			<TopCategories
-				transactions={accountsInfo.account?.transactions}
+	return (
+		<section className='transactions'>
+		  <div className='transactions-header'>
+			<HeaderBox
+			  title='Transaction History'
+			  subtext='See your bank details and transactions'
 			/>
-          <TransactionsTable
-            transactions={accountsInfo.account?.transactions}
-          />
-        </section>
-      </div>
-    ) : (
-      <Spinner/>
-    )}
-    </section>
-  )
+		  </div>
+		  
+		  {accountsInfo?.accounts !== null ? (
+			<div>
+			  {accountsInfo?.accounts.data.map((account: any) => (
+				<div key={account.data.id} className='space-y-6'>
+				  <div className='transactions-account'>
+					<div className='flex flex--col gap-2'>
+					  <h2 className='text-18 font-bold text-white'>{account.data.name}</h2>
+					  <p className='text-14 text-blue-25'>
+						{account.data.officialName}
+					  </p>
+					  <p className='text-14 font-semibold tracking-[1.1px] text-white'>
+						<span className='text-20'>**** **** **** </span>
+						<span className='text-16'>{account.data.mask}</span>
+					  </p>
+					</div>
+					<div className='transactions-accounts-balance'>
+					  <p className='text-14'>Account Balance</p>
+					  <p className='text-24 font-bold'>{account.data.currentBalance}</p>
+					</div>
+				  </div>
+	  
+				  <section className='flex w-full flex-col gap-6'>
+					<TopCategories transactions={account.transactions} />
+					<TransactionsTable transactions={account.transactions} />
+				  </section>
+				</div>
+			  ))}
+			</div>
+		  ) : (
+			<Spinner />
+		  )}
+		</section>
+	  );
+	  
 }
+
 
 export default TransactionHistory

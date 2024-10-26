@@ -16,6 +16,7 @@ const Page = ({searchParams: {id, page}}: SearchParamProps) => {
 	const [accountsInfo, setAccountsInfo] = useState({
 		accounts:null, 
 		accountsData:[], 
+		allTransactions: [],
 		appwriteItemId:'', 
 		account:null
 	})
@@ -50,12 +51,30 @@ const Page = ({searchParams: {id, page}}: SearchParamProps) => {
 					return
 				}
 				const accountsData = accounts?.data
+				const allTransactions = accounts.data.flatMap(account => account.transactions);
+				console.log('allTransactions', allTransactions)
+				const allAccounts = {data:{
+					appwriteItemId: "000",
+					availableBalance: 0,
+					currentBalance: 0,
+					id: "allAcc",
+					institutionId: "ins_0",
+					mask: "0000",
+					name: "All Accounts",
+					officialName: "All Accounts",
+					shareableId: "",
+					subtype: "",
+					type: ""
+				},
+			transactions: allTransactions}
+				accountsData.unshift(allAccounts)
 				const appwriteItemId = accountsData[0]?.appwriteItemId //(id as string) || accountsData[0]?.appwriteItemId
 				const responseSingle = await getAccount({appwriteItemId})
 				console.log('account appwriteid', appwriteItemId)
 				const account = await responseSingle
 				return {accounts:accounts, 
 					accountsData:accountsData, 
+					allTransactions: allTransactions,
 					appwriteItemId:appwriteItemId, 
 					account:account}
 			} catch (error){
@@ -131,7 +150,7 @@ const Page = ({searchParams: {id, page}}: SearchParamProps) => {
 		  </>
 		)}
 
-		{accountsInfo.accounts !== null ? (
+		{accountsInfo.accountsData.length !== 0 ? (
 		<>
 			<SummaryCard
 				accounts={accountsInfo?.accountsData}
@@ -141,14 +160,14 @@ const Page = ({searchParams: {id, page}}: SearchParamProps) => {
 			<div className='block xl:hidden'>
 			 <RightSidebar 
 			  user={loggedUser}
-			  transactions={accountsInfo.accounts?.transactions || 0}
-			  banks={accountsInfo.accountsData?.slice(0,2) || 0}
+			  transactions={accountsInfo.accounts?.data.map((a) => a.transactions) || 0}
+			  banks={accountsInfo.accountsData?.flatMap(account => account.data) || 0}
 			/>
 			</div> 
 			<div className='md:block hidden'>
 				<RecentTransactions 
 			accounts={accountsInfo.accountsData}
-			transactions={accountsInfo.account?.transactions}
+			transactions={accountsInfo.allTransactions}//account?.transactions}
 			appwriteItemId={accountsInfo.appwriteItemId}
 			page={currentPage}
 			/>
@@ -161,26 +180,20 @@ const Page = ({searchParams: {id, page}}: SearchParamProps) => {
 
       </div>
 	  <div className='xl:block hidden'>
-	  {accountsInfo.accounts !== null ? (
+	  {accountsInfo.accountsData.length !== 0 ? (
 		<>
 		 <RightSidebar 
 			  user={loggedUser}
 			  transactions={accountsInfo.accounts?.transactions || 0}
 			  banks={accountsInfo.accountsData?.slice(0,2) || 0}
 		  />
-		  {/* <RecentTransactions 
-          accounts={accountsInfo.accountsData}
-          transactions={accountsInfo.account?.transactions}
-          appwriteItemId={accountsInfo.appwriteItemId}
-          page={currentPage}
-        /> */}
 		</>
 		): (
 			<Spinner/>
 		)}
 		</div>
 
-			{accountsInfo.accounts !== null ? (
+			{accountsInfo.accountsData.length !== 0 ? (
 				<div className='md:hidden'>
 				<RecentTransactions 
 				accounts={accountsInfo.accountsData}

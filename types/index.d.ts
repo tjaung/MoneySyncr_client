@@ -54,8 +54,8 @@ declare type NewUserParams = {
   password: string;
 };
 
-declare type Account = {
-  id: string;
+declare type Account = [
+  {data:{id: string;
   availableBalance: number;
   currentBalance: number;
   officialName: string;
@@ -66,7 +66,10 @@ declare type Account = {
   subtype: string;
   appwriteItemId: string;
   shareableId: string;
-};
+}},
+{
+  transactions:any
+}];
 
 declare type Transaction = {
   id: string;
@@ -85,6 +88,7 @@ declare type Transaction = {
   channel: string;
   senderBankId: string;
   receiverBankId: string;
+  bank: string;
 };
 
 declare type Bank = {
@@ -293,6 +297,7 @@ declare interface getInstitutionProps {
 
 declare interface getTransactionsProps {
   accessToken: string;
+  bankId: string
 }
 
 declare interface CreateFundingSourceOptions {

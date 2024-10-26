@@ -18,8 +18,8 @@ const DoughnutChart = ({accounts, label, labels, displayLegend}: DoughnutChartPr
         balances = []
     } else{
         // labelsArray= accounts.map((a) => )
-        accountNames = accounts.map((a) => a.name);
-        balances = accounts.map((a) => a.currentBalance)
+        accountNames = accounts.map((a) => a.data.name);
+        balances = accounts.map((a) => a.data.currentBalance)
     }
    
     const data = {

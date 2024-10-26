@@ -27,6 +27,7 @@ import {
   } 
   
   const TransactionsTable = ({ transactions }: TransactionTableProps) => {
+    console.log('table trans', transactions)
     return (
       <Table>
         <TableHeader className="bg-[#f9fafb]">
@@ -37,6 +38,7 @@ import {
             <TableHead className="px-2">Date</TableHead>
             <TableHead className="px-2 max-md:hidden">Channel</TableHead>
             <TableHead className="px-2 max-md:hidden">Category</TableHead>
+            <TableHead className="px-2 max-md:hidden">Account</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -80,6 +82,9 @@ import {
   
                 <TableCell className="pl-2 pr-10 max-md:hidden">
                  <CategoryBadge category={t.category} /> 
+                </TableCell>
+                <TableCell className="pl-2 pr-10 max-md:hidden">
+                 {t.bank}
                 </TableCell>
               </TableRow>
             )
