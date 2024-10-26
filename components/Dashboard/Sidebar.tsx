@@ -1,19 +1,24 @@
 'use client'
 
-import React from 'react'
+import React, { useContext, useState, createContext } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { sidebarLinks } from '@/constants'
 import { cn } from '@/lib/utils'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { useAppSelector, useAppDispatch } from '@/redux/hooks'
 import { logout as setLogout } from '@/redux/features/authSlice'
 import { useLogoutMutation } from '@/redux/features/authApiSlice'
 import { NavLink } from '../Common'
-import PlaidLink from './Plaid/PlaidLink'
+import { ChevronFirst, ChevronLast } from 'lucide-react'
 
-const Sidebar = () => {
-    const pathname = usePathname();
+
+// export default Sidebar
+const SidebarContext = createContext()
+
+export default function Sidebar({ children }) {
+  const [expanded, setExpanded] = useState(true)
+  const pathname = usePathname();
 	const dispatch = useAppDispatch();
 
 	const [logout] = useLogoutMutation();
@@ -28,55 +33,130 @@ const Sidebar = () => {
 			});
 	};
 
-    return (
-    <section className='sidebar'>
-        <nav className='flex flex-col gap-4'>
+  return (
+    <aside className="sidebar h-screen">
+      <nav className="h-full flex flex-col bg-white border-r shadow-sm">
+        <div className="p-4 pb-2 flex justify-between items-center">
+          <img
+            src="https://img.logoipsum.com/243.svg"
+            className={`overflow-hidden transition-all ${
+              expanded ? "w-32" : "w-0"
+            }`}
+            alt=""
+          />
+          <button
+            onClick={() => setExpanded((curr) => !curr)}
+            className="p-1.5 rounded-lg bg-gray-50 text-black hover:bg-gray-100"
+          >
+            {expanded ? <ChevronFirst className='text-black'/> : <ChevronLast className='text-black' />}
+          </button>
+        </div>
 
-            <Link href='/' className='mb-12 cursor-pointer flex items-center gap-2'>
-                <Image 
-                    src="/icons/logo.svg"
-                    width={34}
-                    height={34}
-                    alt='logo'
-                    className='size-[24px] max-xl:size-14'
-                    />
-                <h1 className='sidebar-logo'>Budget Tracker</h1>
-            </Link>
-            
-            {sidebarLinks.map((item: any) => {
-                const isActive = pathname === item.route || pathname.startsWith(`${item.route}/`)
+        <SidebarContext.Provider value={{ expanded }}>
+            <ul>
+                {sidebarLinks.map((item:any) => {
+                    const isActive = pathname === item.route || pathname.startsWith(`${item.route}/`)
 
-                return (
-                    <Link 
-                        href={`/dashboard/${item.route}`}
-                        key={item.label}
-                        className={cn('sidebar-link h-16', {'bg-bank-gradient': isActive})}
-                        >
-                        <div className='relative size-6'>
-                            <Image 
-                                src={item.imgURL}
-                                alt={item.label}
-                                fill
-                                className={cn({'brightness-[3] invert-0': isActive})}
-                            />
-                        </div>
-                        <p className={cn('sidebar-label', {'!text-white': isActive})}>
-                                {item.label}
-                            </p>
-                    </Link>
-                )
-            })}
-             <NavLink clasName='sidebar-link h-1 bg-bank-gradient cursor-pointer' isMobile={false} onClick={handleLogout}>
+                    return (
+                        <SidebarItem
+                         icon={item.imgURL}
+                         text={item.label}
+                         route={item.route}
+                         active={isActive}
+                          />
+                    )
+                })}
+            </ul>
+                
+        </SidebarContext.Provider>
+
+        <div className="border-t flex p-3">
+          <div
+            className={`
+              flex justify-between items-center
+              overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}
+          `}
+          >
+            <div className="leading-4">
+              <NavLink clasName='relative flex items-center py-2 px-3 my-1
+        font-medium rounded-md cursor-pointer
+        transition-colors group' isMobile={false} onClick={handleLogout}>
 				Logout
 			</NavLink>
-            
-            
-
-        </nav>
-
-        FOOTER 
-    </section>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </aside>
   )
 }
 
-export default Sidebar
+export function SidebarItem({ icon, text, route, active }) {
+  const { expanded } = useContext(SidebarContext)
+  
+  return (
+    <li
+      className={`
+        relative flex items-center py-2 px-3 my-1
+        font-medium rounded-md cursor-pointer
+        transition-colors group
+        ${
+          active
+            ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
+            : "hover:bg-indigo-50 text-gray-600"
+        }
+    `}
+    >
+      <Link 
+        href={`/dashboard/${route}`}
+        key={text}
+        className={`
+            relative flex items-center py-2 px-3 my-1
+            font-medium rounded-md cursor-pointer
+            transition-colors group
+            ${
+                active
+                ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
+                : "hover:bg-indigo-50 text-gray-600"
+            }`}
+        >
+        <div className='relative size-6 overflow-hidden transition-all'>
+            <Image 
+                src={icon}
+                alt={text}
+                fill
+                className={cn({'brightness-[3] invert-0 overflow-hidden transition-all': active, 'w-0': !expanded})}
+            />
+        </div>
+        <span
+        className={`overflow-hidden transition-all ${
+          expanded ? "w-52 ml-3" : "w-0"
+        }`}
+      >
+        {text}
+      </span>
+    </Link>
+     
+      {/* {alert && (
+        <div
+          className={`absolute right-2 w-2 h-2 rounded bg-indigo-400 ${
+            expanded ? "" : "top-2"
+          }`}
+        />
+      )} */}
+
+      {!expanded && (
+        <div
+          className={`
+          absolute left-full rounded-md px-2 py-1 ml-6
+          bg-indigo-100 text-indigo-800 text-sm
+          invisible opacity-20 -translate-x-3 transition-all
+          group-hover:visible group-hover:opacity-100 group-hover:translate-x-0
+      `}
+        >
+          {text}
+        </div>
+      )}
+    </li>
+  )
+}

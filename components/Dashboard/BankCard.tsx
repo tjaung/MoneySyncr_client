@@ -7,7 +7,7 @@ import Copy from '../Common/Copy'
 const BankCard = ({account, userName, showBalance = true}: CreditCardProps) => {
   return (
     <div className='flez flex-col'>
-        <Link href={`/dashboard/transaction-history/?id=${account.appwriteItemId}`}
+        <Link href={`/dashboard/transaction-history`}
             className='bank-card min-w-[325px]'
         >
             <div className='bank-card_content'>

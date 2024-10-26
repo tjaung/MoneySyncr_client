@@ -1,5 +1,5 @@
 'use client'
-import HeaderBox from '@/components/HeaderBox'
+import HeaderBox from '@/components/Common/HeaderBox'
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useRetrieveUserQuery } from '@/redux/features/authApiSlice'
@@ -8,7 +8,13 @@ import { getAccount, getAccounts } from '@/lib/actions/bank.actions'
 import TransactionsTable from '@/components/Dashboard/TransactionsTable'
 import { Spinner } from '@/components/Common'
 import TopCategories from '@/components/Dashboard/TopCategories'
-
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+  } from "@/components/ui/accordion"
+  
 
 interface AccountsInfo {
 	accounts: { data: Account; transactions: Transaction[] }[] | null;
@@ -95,7 +101,9 @@ const TransactionHistory = ({searchParams: {id, page}}) => {
 		  {accountsInfo?.accounts !== null ? (
 			<div>
 			  {accountsInfo?.accounts.data.map((account: any) => (
-				<div key={account.data.id} className='space-y-6'>
+				<Accordion type="single" collapsible>
+				<AccordionItem value="item-1">
+				  <AccordionTrigger><div key={account.data.id} className='space-y-6'>
 				  <div className='transactions-account'>
 					<div className='flex flex--col gap-2'>
 					  <h2 className='text-18 font-bold text-white'>{account.data.name}</h2>
@@ -112,12 +120,18 @@ const TransactionHistory = ({searchParams: {id, page}}) => {
 					  <p className='text-24 font-bold'>{account.data.currentBalance}</p>
 					</div>
 				  </div>
+				</div>
+				</AccordionTrigger>
+				  <AccordionContent>
+				
 	  
 				  <section className='flex w-full flex-col gap-6'>
 					<TopCategories transactions={account.transactions} />
 					<TransactionsTable transactions={account.transactions} />
 				  </section>
-				</div>
+				  </AccordionContent>
+  </AccordionItem>
+</Accordion>
 			  ))}
 			</div>
 		  ) : (

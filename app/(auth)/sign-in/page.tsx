@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { LoginForm } from '@/components/Forms';
 import type { Metadata } from 'next';
-
+import logo from '../../../public/logo.png'
 export const metadata: Metadata = {
 	title: 'Money Syncr | Login',
 	description: 'login page',
@@ -13,7 +13,7 @@ export default function Page() {
 			<div className='sm:mx-auto sm:w-full sm:max-w-sm'>
 				<img
 					className='mx-auto h-10 w-auto'
-					src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600'
+					src='../../public/logo.png'
 					alt='MoneySyncr'
 				/>
 				<h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>

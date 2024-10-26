@@ -1,7 +1,7 @@
 'use client'
 import { Spinner } from '@/components/Common'
 import BankCard from '@/components/Dashboard/BankCard'
-import HeaderBox from '@/components/HeaderBox'
+import HeaderBox from '@/components/Common/HeaderBox'
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useRetrieveUserQuery } from '@/redux/features/authApiSlice'
@@ -91,8 +91,8 @@ const Accounts = () => {
           <div className='flex flex-wrap gap-6'>
           {accountsInfo.accounts?.data.map((acc: Account) => (
             <BankCard
-              key={acc.id}
-              account={acc}
+              key={acc.data.id}
+              account={acc.data}
               userName={loggedUser.first_name}
               />
           ))}

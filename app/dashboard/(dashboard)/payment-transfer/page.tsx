@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRetrieveUserQuery } from '@/redux/features/authApiSlice'
 import { pushUserToAppwriteAndMakeSession } from '@/lib/actions/user.actions'
 import { getAccount, getAccounts } from '@/lib/actions/bank.actions'
-import HeaderBox from '@/components/HeaderBox'
+import HeaderBox from '@/components/Common/HeaderBox'
 import PaymentTransferForm from '@/components/Forms/PaymentTransferForm'
 import { Spinner } from '@/components/Common'
 

@@ -73,7 +73,7 @@ const RecentTransactions = ({
             className="space-y-4"
           >
             <BankInfo 
-              account={account.data.name}
+              account={account.data}
               appwriteItemId={account.data.appwriteItemId}
               type="full"
             />

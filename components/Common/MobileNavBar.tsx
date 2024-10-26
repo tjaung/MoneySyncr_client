@@ -40,7 +40,7 @@ const MobileNavBar = () => {
 	};
 
   return (
-    <section className='w-fulll max-w-[260px]'>
+    <section className='w-full max-w-[260px] fixed block xl:hidden'>
         <Sheet>
             <SheetTrigger>
                 <Image
@@ -48,7 +48,7 @@ const MobileNavBar = () => {
                     width={30}
                     height={30}
                     alt='menu'
-                    className='cursor-pointer'
+                    className='cursor-pointer fixed top-4 right-4 z-50'
                 />
             </SheetTrigger>
             <SheetContent className='border-none bg-white'>
@@ -58,7 +58,7 @@ const MobileNavBar = () => {
                         <SheetClose asChild>
                             <nav className='flex h-full gap-6 flex-col pt-16 text-white'>
                                 {sidebarLinks.map((item: any) => {
-                                const isActive = pathname === item.route || pathname.startsWith(`${item.route}/`)
+                                const isActive = pathname === item.route || pathname.startsWith(`/dashboard/${item.route}/`)
                                 
                                 return (
                                     <SheetClose asChild key={item.route}>
