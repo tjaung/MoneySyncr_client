@@ -16,12 +16,8 @@ const PaymentTransfer = () => {
 		appwriteItemId:'', 
 		account:null
 	})
-	console.log('initial accountsInfo', accountsInfo)
-	// const currentPage = Number(page as string) || 1
-	// console.log(currentPage)
-	// console.log('dashboard search params', id, page)
+
 	const { data: user, isLoading, isFetching } = useRetrieveUserQuery();
-	console.log(user)
 
 	// push user to appwrite if possible and get user data
 	useEffect(() => {

@@ -10,6 +10,8 @@ import { pushUserToAppwriteAndMakeSession } from '@/lib/actions/user.actions';
 import { useEffect, useState } from 'react';
 import { getAccount, getAccounts } from '@/lib/actions/bank.actions';
 import Link from 'next/link';
+import MonthlyTotals from '@/components/Dashboard/MonthlyTotals';
+import AccountCards from '@/components/Dashboard/AccountCards';
 
 const Page = ({id, page}: SearchParamProps) => {
 	const [loggedUser, setLoggedUser] = useState(null)
@@ -112,6 +114,7 @@ const Page = ({id, page}: SearchParamProps) => {
 			</div>
 		);
 	}
+	console.log('user data', accountsInfo)
 
 	return (
 		<>
@@ -139,12 +142,25 @@ const Page = ({id, page}: SearchParamProps) => {
 
 		{accountsInfo.accountsData.length !== 0 ? (
 		<>
+			<div className='flex flex-row flex-wrap justify-center gap-6'>
 			<SummaryCard
 				accounts={accountsInfo?.accountsData}
 				totalBanks={accountsInfo.accounts?.totalBanks}
 				totalCurrentBalance={accountsInfo.accounts?.totalCurrentBalance}
           	/>
+			<AccountCards
+			user={loggedUser}
+			banks={accountsInfo.accounts?.data}
+			/>
 			
+			</div>
+			<MonthlyTotals
+			accounts={accountsInfo?.accountsData}
+			totalBanks={accountsInfo.accounts?.totalBanks}
+			totalCurrentBalance={accountsInfo.accounts}
+			/>
+			
+
 			<div className='md:block hidden'>
 				<RecentTransactions 
 			accounts={accountsInfo.accountsData}

@@ -14,7 +14,9 @@ import {
 	AccordionItem,
 	AccordionTrigger,
   } from "@/components/ui/accordion"
-  
+import { TabsTrigger, TabsList, Tabs } from '@/components/ui/tabs'
+import { BankTabItem } from '@/components/Dashboard/BankTabItem'
+import RecentTransactions from '@/components/Dashboard/RecentTransactions'
 
 interface AccountsInfo {
 	accounts: { data: Account; transactions: Transaction[] }[] | null;
@@ -99,11 +101,25 @@ const TransactionHistory = ({searchParams: {id, page}}) => {
 		  </div>
 		  
 		  {accountsInfo?.accounts !== null ? (
-			<div>
-			  {accountsInfo?.accounts.data.map((account: any) => (
+			<div className='flex flex-col justify-center'>
+			  {accountsInfo?.accounts.data.map((account: any) => {
+				
+				
+				return(
 				<Accordion type="single" collapsible>
 				<AccordionItem value="item-1">
 				  <AccordionTrigger><div key={account.data.id} className='space-y-6'>
+				  <Tabs defaultValue={account.appwriteItemId} className="w-full">
+				  <TabsList className="recent-transactions-tablist">
+				  <TabsTrigger key={account.id} value={account.appwriteItemId}>
+					<BankTabItem
+						key={account.data.officialName}
+						account={account}
+						appwriteItemId={account.appwriteItemId}
+					/>
+					</TabsTrigger>
+					</TabsList>
+					</Tabs>
 				  <div className='transactions-account'>
 					<div className='flex flex--col gap-2'>
 					  <h2 className='text-18 font-bold text-white'>{account.data.name}</h2>
@@ -126,13 +142,17 @@ const TransactionHistory = ({searchParams: {id, page}}) => {
 				
 	  
 				  <section className='flex w-full flex-col gap-6'>
-					<TopCategories transactions={account.transactions} />
-					<TransactionsTable transactions={account.transactions} />
+					<RecentTransactions
+						accounts={accountsInfo.accountsData}
+						transactions={account.transactions}//account?.transactions}
+						appwriteItemId={account.data.appwriteItemId}
+						page={currentPage}
+					/>
 				  </section>
 				  </AccordionContent>
-  </AccordionItem>
-</Accordion>
-			  ))}
+				</AccordionItem>
+				</Accordion>
+			  )})}
 			</div>
 		  ) : (
 			<Spinner />

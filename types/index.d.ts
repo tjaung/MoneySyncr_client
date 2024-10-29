@@ -222,13 +222,17 @@ declare interface BankDropdownProps {
 
 declare interface BankTabItemProps {
   account: Account;
-  appwriteItemId?: string;
+  appwriteId?: string;
 }
 
 declare interface SummaryCardProps {
   accounts: Account[];
   totalBanks: number;
   totalCurrentBalance: number;
+}
+
+declare interface MonthlyProps {
+  accounts: Account[];
 }
 
 declare interface FooterProps {
@@ -276,6 +280,12 @@ declare interface DoughnutChartProps {
   labels: String, 
   cutout: String, 
   displayLegend: Boolean
+}
+
+declare interface LineChartProps {
+  accounts,
+  label: String,
+  isAll: boolean
 }
 
 declare interface PaymentTransferFormProps {

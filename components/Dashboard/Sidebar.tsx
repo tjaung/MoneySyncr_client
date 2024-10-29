@@ -34,11 +34,11 @@ export default function Sidebar({ children }) {
 	};
 
   return (
-    <aside className="sidebar h-screen">
+    <aside className="sidebar h-screen z-50">
       <nav className="h-full flex flex-col bg-white border-r shadow-sm">
         <div className="p-4 pb-2 flex justify-between items-center">
           <img
-            src="https://img.logoipsum.com/243.svg"
+            src="/icons/logo.svg"
             className={`overflow-hidden transition-all ${
               expanded ? "w-32" : "w-0"
             }`}
@@ -46,7 +46,7 @@ export default function Sidebar({ children }) {
           />
           <button
             onClick={() => setExpanded((curr) => !curr)}
-            className="p-1.5 rounded-lg bg-gray-50 text-black hover:bg-gray-100"
+            className="p-1.5 rounded-lg bg-gray-500 text-black hover:bg-gray-300"
           >
             {expanded ? <ChevronFirst className='text-black'/> : <ChevronLast className='text-black' />}
           </button>

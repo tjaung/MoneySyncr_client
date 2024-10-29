@@ -8,27 +8,26 @@ import TransactionsTable from './TransactionsTable'
 import { Pagination } from './Pagination'
 import TopCategories from './TopCategories'
 import { parseStringify } from '@/lib/utils'
+import { useSearchParams } from 'next/navigation';
 
 const RecentTransactions = ({
     accounts, 
     transactions=[], 
-    appwriteItemId, 
-    page=1}: RecentTransactionsProps) => {
+    appwriteItemId}: RecentTransactionsProps) => {
+      
+  const searchParams = useSearchParams();
+  const searchId = searchParams.getAll('id')
+  const page = parseInt(searchParams.get("page") || "1", 10);
 
   const rowsPerPage = 10
   const totalPages = Math.ceil(transactions.length/rowsPerPage)
-      console.log('recent transactions accounts', accounts)
-
-      console.log('recent transactions transactions', transactions)
     
   const indexOfLastTransaction = page * rowsPerPage;
   const indexOfFirstTransaction = indexOfLastTransaction - rowsPerPage;
-
   const currentTransactions = transactions.slice(
     indexOfFirstTransaction, indexOfLastTransaction
   )
   const allTransactions = parseStringify(accounts[0].transactions)
-  console.log(allTransactions)
   return (
     <>
      <section className="recent-transactions">
@@ -49,9 +48,7 @@ const RecentTransactions = ({
 
       <Tabs defaultValue={appwriteItemId} className="w-full">
       <TabsList className="recent-transactions-tablist">
-          {accounts.map((account: any) => {
-            console.log(account)
-            console.log(account.data.id)
+          {accounts.filter(a => a.data.name == 'All Accounts').map((account: any) => {
             return (
             <TabsTrigger key={account.data.id} value={account.data.appwriteItemId}>
               <BankTabItem
@@ -64,8 +61,6 @@ const RecentTransactions = ({
         </TabsList>
  
         {accounts.map((account: any) => {
-          console.log(parseStringify(account))
-          console.log(account.transactions)
             return (
           <TabsContent
             value={account.data.appwriteItemId}
@@ -77,8 +72,7 @@ const RecentTransactions = ({
               appwriteItemId={account.data.appwriteItemId}
               type="full"
             />
-            {/* { console.log(this.props.account.transactions) } */}
-            <TransactionsTable transactions={account.transactions} />
+            <TransactionsTable transactions={currentTransactions} />
             
 
             {totalPages > 1 && (
