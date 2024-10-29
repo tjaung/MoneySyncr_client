@@ -2,6 +2,14 @@
 
 Front end for the MoneySyncr app, a one stop app for all of your banking needs.
 
+## Get Started
+
+You will need the [back end](https://github.com/tjaung/MoneySyncr_back/tree/main) to be running before you can do anything, so go set that up first before.
+
+Once that's done, copy and paste this command in your terminal: https://github.com/tjaung/MoneySyncr_client.git
+
+Go to the new directory and type in: "npm run dev" to start playing around with it.
+
 ## About
 
 This is not just another budgeting app. It connects all your bank accounts with the Plaid API and Dwolla to allow you to transfer money to your all of your other accounts. I was sick of going to a bunch of different apps to move my own money around, so I took the liberty of creating my own app to do it all.
