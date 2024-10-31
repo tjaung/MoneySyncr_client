@@ -2,7 +2,7 @@ import { apiSlice } from "../services/apiSlice";
 
 const authApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
-        retrieveUser: builder.query({
+        retrieveUser: builder.query<User, void>({
             query: () => '/users/me/'
         }),
         login: builder.mutation({
