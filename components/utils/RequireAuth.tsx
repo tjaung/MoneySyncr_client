@@ -11,6 +11,7 @@ interface Props {
 export default function RequireAuth({ children }: Props) {
 	const { isLoading, isAuthenticated } = useAppSelector(state => state.auth);
 	const router = useRouter()
+	console.log(isAuthenticated, isLoading)
 	if (isLoading) {
 		return (
 			<div className='flex justify-center my-8'>

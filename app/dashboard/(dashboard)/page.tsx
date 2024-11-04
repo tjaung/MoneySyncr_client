@@ -12,6 +12,7 @@ import { getAccount, getAccounts } from '@/lib/actions/bank.actions';
 import Link from 'next/link';
 import MonthlyTotals from '@/components/Dashboard/MonthlyTotals';
 import AccountCards from '@/components/Dashboard/AccountCards';
+import { useAppSelector } from '@/redux/hooks';
 
 const Page = ({id, page}: SearchParamProps) => {
 	const [loggedUser, setLoggedUser] = useState(null)
@@ -22,13 +23,16 @@ const Page = ({id, page}: SearchParamProps) => {
 		appwriteItemId:'', 
 		account:null
 	})
+	console.log(JSON.stringify(useAppSelector(state => state.auth)));
 	const { data: user, isLoading, isFetching } = useRetrieveUserQuery();
+	console.log(JSON.stringify(useRetrieveUserQuery()));
 	const currentPage = Number(page as string) || 1
 	// push user to appwrite if possible and get user data
 	useEffect(() => {
 		console.log('trigger useEffect')
 		async function fetchUserSession(user: object) {
 			const getUser = await pushUserToAppwriteAndMakeSession(user);
+			console.log(getUser)
 			setLoggedUser(getUser);
 		  }
 		fetchUserSession(user);

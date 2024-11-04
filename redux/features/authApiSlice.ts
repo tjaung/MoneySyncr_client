@@ -1,17 +1,34 @@
 import { apiSlice } from "../services/apiSlice";
+import { setAuth } from "./authSlice";
 
 const authApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         retrieveUser: builder.query<User, void>({
             query: () => '/users/me/'
         }),
-        login: builder.mutation({
+		login: builder.mutation({
 			query: ({ email, password }) => ({
 				url: '/jwt/create/',
 				method: 'POST',
 				body: { email, password },
 			}),
+			async onQueryStarted(args, { dispatch, getState, queryFulfilled }) {
+				try {
+					const { data } = await queryFulfilled;
+		
+					// Check if the token is already in the state to avoid setting it twice
+					const currentToken = getState().auth.token;
+					if (!currentToken) {
+						dispatch(setAuth(data.access)); // Only dispatch if token is not set
+					}
+		
+				} catch (error) {
+					console.error('Login failed:', error);
+				}
+			},
 		}),
+		
+		
         register: builder.mutation({
 			
 			query: ({

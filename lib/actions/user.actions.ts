@@ -38,20 +38,22 @@ export const pushUserToAppwriteAndMakeSession = async ( userData: UserObjectPara
         const userQuery = await getUserInfo(userData.users_id)
         console.log('pushtoappwrite query res', userQuery)
         const userExists = userQuery != 0
-
+        const password = `${userData.users_id}${userData.email}`
         let newUserAccount
         if (!userExists){
-
-            newUserAccount = await account.create(
+          console.log('no user exists. making new one')
+          try{  
+          newUserAccount = await account.create(
                 ID.unique(), 
                 userData.email, 
-                `${userData.users_id}${userData.email}`, 
+                password, 
                 `${userData.first_name} ${userData.last_name}`
               );
-          
               if(!newUserAccount) throw new Error('Error creating user')
-          
-            
+            } catch(error){
+              console.log('error creating user account:', error)
+            }
+              
             const dwollaData = {
                 firstName: userData.first_name,
                 lastName: userData.last_name,
@@ -94,6 +96,7 @@ export const pushUserToAppwriteAndMakeSession = async ( userData: UserObjectPara
                   dwollaCustomerUrl
                 }
               )
+              console.log('appwrite made new user docL:', newUser)
         
       const session = await account.createEmailPasswordSession(
         userData.email,
@@ -109,10 +112,12 @@ export const pushUserToAppwriteAndMakeSession = async ( userData: UserObjectPara
         return parseStringify(newUser);
     }
         // user already exists
-        console.log('for the session', userData.email, userQuery.email)
+        console.log('for the session', userQuery.email, userQuery.password)
         const session = await account.createEmailPasswordSession(
-            userData.email, 
-            `${userData.users_id}${userData.email}`);
+          userQuery.email, 
+          userQuery.password);
+          console.log('session made:', session, userQuery.email, 
+            userQuery.password)
   
         cookies().set("appwrite-session", session.secret, {
           path: "/dashboard",
