@@ -16,7 +16,6 @@ const RecentTransactions = ({
     appwriteItemId}: RecentTransactionsProps) => {
       
   const searchParams = useSearchParams();
-  const searchId = searchParams.getAll('id')
   const page = parseInt(searchParams.get("page") || "1", 10);
 
   const rowsPerPage = 10
@@ -24,10 +23,11 @@ const RecentTransactions = ({
     
   const indexOfLastTransaction = page * rowsPerPage;
   const indexOfFirstTransaction = indexOfLastTransaction - rowsPerPage;
-  const currentTransactions = transactions.slice(
+  const allTransactions = accounts[0].transactions
+  const currentTransactions = allTransactions.slice(
     indexOfFirstTransaction, indexOfLastTransaction
   )
-  const allTransactions = parseStringify(accounts[0].transactions)
+  
   return (
     <>
      <section className="recent-transactions">

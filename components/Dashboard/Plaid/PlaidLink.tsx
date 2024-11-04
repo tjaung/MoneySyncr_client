@@ -21,7 +21,8 @@ const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
     await exchangePublicToken({
       publicToken: public_token,
       user,
-    })
+    }),
+    router.push('/dashboard')
   }, [user])
   
   const config: PlaidLinkOptions = {
