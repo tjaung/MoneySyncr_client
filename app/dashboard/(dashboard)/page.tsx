@@ -23,16 +23,12 @@ const Page = ({id, page}: SearchParamProps) => {
 		appwriteItemId:'', 
 		account:null
 	})
-	console.log(JSON.stringify(useAppSelector(state => state.auth)));
 	const { data: user, isLoading, isFetching } = useRetrieveUserQuery();
-	console.log(JSON.stringify(useRetrieveUserQuery()));
 	const currentPage = Number(page as string) || 1
 	// push user to appwrite if possible and get user data
 	useEffect(() => {
-		console.log('trigger useEffect')
 		async function fetchUserSession(user: object) {
 			const getUser = await pushUserToAppwriteAndMakeSession(user);
-			console.log(getUser)
 			setLoggedUser(getUser);
 		  }
 		fetchUserSession(user);
@@ -52,7 +48,6 @@ const Page = ({id, page}: SearchParamProps) => {
 				const totalAvailableBalance = accounts.data.reduce((sum, account) => {
 					return sum + account.data.availableBalance;
 				  }, 0);
-				console.log(totalAvailableBalance)
 				const allTransactions = accounts.data.flatMap(account => account.transactions);
 				const allAccounts = {data:{
 					appwriteItemId: "000",
@@ -118,7 +113,6 @@ const Page = ({id, page}: SearchParamProps) => {
 			</div>
 		);
 	}
-	console.log('user data', accountsInfo)
 
 	return (
 		<>

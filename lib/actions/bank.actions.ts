@@ -19,9 +19,7 @@ import { getBanks, getBank } from "./user.actions";
 export const getAccounts = async ({ userId }: getAccountsProps) => {
   try {
     // get banks from db
-    console.log('getAccounts', userId)
     const banks = await getBanks({ userId });
-    console.log(banks)
     const accounts = await Promise.all(
       banks?.map(async (bank: Bank) => {
         // get each account info from plaid
@@ -30,7 +28,6 @@ export const getAccounts = async ({ userId }: getAccountsProps) => {
         });
         
         const accountData = accountsResponse.data.accounts[0];
-        console.log('bankactions getAccounts data for one:', accountData)
         // get institution info from plaid
         const institution = await getInstitution({
           institutionId: accountsResponse.data.item.institution_id!,
@@ -49,9 +46,9 @@ export const getAccounts = async ({ userId }: getAccountsProps) => {
           appwriteItemId: bank.$id,
           shareableId: bank.shareableId,
         };
-        // console.log('bankactions getAccounts account:', account)
+
         const allTransactions = await getAccountTransactions(bank)
-        // console.log(allTransactions)
+
         return parseStringify({
           data: account,
           transactions: allTransactions,
@@ -63,9 +60,7 @@ export const getAccounts = async ({ userId }: getAccountsProps) => {
     const totalCurrentBalance = accounts.reduce((total, account) => {
       return total + account.data.currentBalance;
     }, 0);
-    // console.log('bankactions getAccounts end:', 
-    //     parseStringify({ data: accounts, totalBanks, totalCurrentBalance })
-    // )
+
     return parseStringify({ data: accounts, totalBanks, totalCurrentBalance });
   } catch (error) {
     console.error("An error occurred while getting the accounts:", error);
@@ -74,12 +69,10 @@ export const getAccounts = async ({ userId }: getAccountsProps) => {
 
 export const getAccountTransactions = async (bank : Bank) => {
   try {
-    console.log('getTransactions bank', bank)
      // get transfer transactions from appwrite
      const transferTransactionsData = await getTransactionsByBankId({
       bankId: bank.$id,
     });
-    // console.log('getAccount transfertransactionsdata', transferTransactionsData)
 
     const transferTransactions = transferTransactionsData.documents.map(
       (transferData: Transaction) => ({
@@ -95,19 +88,16 @@ export const getAccountTransactions = async (bank : Bank) => {
         // bank: transferData.accountId
       })
     );
-    // transferTransactions.forEach()
-    // console.log('getAccounts transfertransactions', transferTransactions)
 
     const transactions = await getTransactions({
       accessToken: bank?.accessToken,
       bankId: bank?.$id
     });
-    console.log('getaccount trans', transactions)
+
     // sort transactions by date such that the most recent transaction is first
     const allTransactions = [...transactions, ...transferTransactions].sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     );
-    console.log(allTransactions)
     return parseStringify(allTransactions)
   } catch (error){
     console.log(error)
@@ -119,19 +109,16 @@ export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
   try {
     // get bank from db
     const bank = await getBank({ documentId: appwriteItemId });
-    console.log('got bank: ', bank)
     // get account info from plaid
     const accountsResponse = await plaidClient.accountsGet({
       access_token: bank.accessToken,
     });
     const accountData = accountsResponse.data.accounts[0];
-    console.log('getAccount data', accountData)
     
     // get institution info from plaid
     const institution = await getInstitution({
       institutionId: accountsResponse.data.item.institution_id!,
     });
-    // console.log('getaccount inst', institution)
 
     const account = {
       id: accountData.account_id,
@@ -147,7 +134,6 @@ export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
     };
 
     const allTransactions = await getAccountTransactions(bank)
-    console.log('all transactions', allTransactions)
     return parseStringify({
       data: account,
       transactions: allTransactions,

@@ -33,24 +33,17 @@ const TransactionHistory = ({searchParams: {id, page}}) => {
 		appwriteItemId:'', 
 		account:null
 	})
-	console.log('initial accountsInfo', accountsInfo)
 	const currentPage = Number(page as string) || 1
-	console.log(currentPage)
-	// console.log('dashboard search params', id, page)
 	const { data: user, isLoading, isFetching } = useRetrieveUserQuery();
-	console.log(user)
 
 	// push user to appwrite if possible and get user data
 	useEffect(() => {
-		console.log('trigger useEffect')
 		async function fetchUserSession(user: object) {
-			console.log('Fetching logged user');
 			const getUser = await pushUserToAppwriteAndMakeSession(user);
 			setLoggedUser(getUser);
 		  }
 		fetchUserSession(user);
 		},[user]);
-	console.log('loggeduser:', loggedUser);
 
 	// bank accounts
 	useEffect(() => {
@@ -58,22 +51,18 @@ const TransactionHistory = ({searchParams: {id, page}}) => {
 			try{
 				const responseAll = await getAccounts({ userId: loggedUser.$id });
         		const accounts = await responseAll; // Convert response to JSON
-				console.log('fetchacc accounts all',accounts)
 				if (accounts == null) {
-					console.log('no accounts')
 					return
 				}
 				const accountsData = accounts?.data
 				const appwriteItemId = accountsData[0]?.appwriteItemId //(id as string) || accountsData[0]?.appwriteItemId
 				const responseSingle = await getAccount({appwriteItemId})
-				console.log('account appwriteid', appwriteItemId)
 				const account = await responseSingle
 				return {accounts:accounts, 
 					accountsData:accountsData, 
 					appwriteItemId:appwriteItemId, 
 					account:account}
 			} catch (error){
-				console.log(error)
 			}
 			
 		}
@@ -86,10 +75,8 @@ const TransactionHistory = ({searchParams: {id, page}}) => {
 			  };
 			  
 			  fetchAndSetAccounts();
-			  console.log('accountsinfo', accountsInfo)
 		}
 	}, [loggedUser])
-	console.log('accountsinfo',accountsInfo)
 
 	return (
 		<section className='transactions'>

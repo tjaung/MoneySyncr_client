@@ -33,11 +33,10 @@ const baseQueryWithReauth: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
+  console.log("Executing baseQueryWithReauth at", new Date().toISOString());
+
   // wait until the mutex is available without locking it
   await mutex.waitForUnlock()
-  console.log('apiSlice: ', 'args', args, 'api', api, 'extra', extraOptions)
-  console.log('Request headers:', args.headers);
-  console.log(await baseQuery(args, api, extraOptions))
   let result = await baseQuery(args, api, extraOptions)
 
   if (result.error && result.error.status === 401) {

@@ -21,26 +21,31 @@ export default function useRegister() {
 		re_password: '',
 	});
 
+	const [submitting, setSubmitting] = useState(false); // Add submitting flag
+
 	const { first_name, last_name, address1, city, state, postalCode, dateOfBirth, ssn, email, password, re_password } = formData;
 
 	const onChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
-
 		setFormData({ ...formData, [name]: value });
 	};
 
-	const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+	const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		register({ first_name, last_name, address1, city, state, postalCode, dateOfBirth, ssn, email, password, re_password })
-			.unwrap()
-			.then(() => {
-				toast.success('Please check email to verify account');
-				router.push('/sign-in');
-			})
-			.catch(() => {
-				toast.error('Failed to register account');
-			});
+		// Prevent duplicate submission if already submitting
+		if (submitting) return;
+		setSubmitting(true);
+
+		try {
+			await register({ first_name, last_name, address1, city, state, postalCode, dateOfBirth, ssn, email, password, re_password }).unwrap();
+			toast.success('Please check email to verify account');
+			router.push('/sign-in');
+		} catch (error) {
+			toast.error('Failed to register account');
+		} finally {
+			setSubmitting(false);
+		}
 	};
 
 	return {

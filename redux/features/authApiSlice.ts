@@ -27,10 +27,7 @@ const authApiSlice = apiSlice.injectEndpoints({
 				}
 			},
 		}),
-		
-		
         register: builder.mutation({
-			
 			query: ({
 				first_name,
 				last_name,

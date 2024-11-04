@@ -18,13 +18,9 @@ const LineChart = ({accounts, label, isAll}: LineChartProps) => {
         
             // aggregate transaction sums by month
             for (let [key, value] of Object.entries(aggregatedData)) {
-                // console.log(key, value)
                 for (const transaction in transactions){
                     if (transactions[transaction].date == key){
-                        // console.log(value)
                         value += transactions[transaction].amount
-                        // console.log('time', key, value)
-                        // console.log(`add ${transactions[transaction].amount} to ${value}`)
                     }
                 aggregatedData[key] = value
                 }
@@ -37,7 +33,6 @@ const LineChart = ({accounts, label, isAll}: LineChartProps) => {
             return aggregatedData
         } 
 
-    console.log('line chart props', accounts)
     let accountNames
     let transactions
     let timeStamps
@@ -78,7 +73,6 @@ const LineChart = ({accounts, label, isAll}: LineChartProps) => {
             accountNames = accounts.filter((a) => a.data.name !== 'All Accounts').map((a) => a.data.name);
             let accountDict = {}
             for (let accName in accountNames){
-                // console.log(accountNames[accName])
                 transactions = accounts.filter((a) => a.data.name == accountNames[accName])[0].transactions
                     .map((transaction) =>(
                         {
@@ -88,9 +82,7 @@ const LineChart = ({accounts, label, isAll}: LineChartProps) => {
                         }))
                 accountDict[accountNames[accName]] = transactions
             }
-            // transactions = accounts.filter((a) => a.data.name !== 'All Accounts').map((a) =>({acc: a.data.name, amount: Number(a.transactions.amount), date:format(parseISO(a.transactions.date), 'MM/yyyy')}))
-            // aggregatedData = Object.fromEntries(transactions.map(t => [t.date, 0]));
-            // console.log('transactions', accountDict)
+
             let aggregatedData = []
             for (let acc in accountDict) {
                 const bgColor = ['#0747b6', '#2265d8', '#2f91fa']

@@ -20,7 +20,6 @@ export const getUserInfo = async ( userId:string ) => {
         process.env.APPWRITE_USERS_COLLECTION_ID!,
         [Query.equal('userId', [userId])]
       )
-      console.log('getuserinfoquery res', user)
       if (user.documents.length == 0) {
         return 0
       }
